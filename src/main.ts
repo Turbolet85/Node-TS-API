@@ -10,6 +10,9 @@ import 'reflect-metadata';
 import { type IUserController } from './users/user.controller.interface.js';
 import { IUserService } from './users/user.service.interface.js';
 import { UserService } from './users/user.service.js';
+import { IConfigService } from './config/config.service.interface.js';
+import { ConfigService } from './config/config.service.js';
+import { PrismaService } from './database/prisma.service.js';
 
 export interface IBootstrapReturn {
 	appContainer: Container;
@@ -17,10 +20,12 @@ export interface IBootstrapReturn {
 }
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
-	bind<ILogger>(TYPES.ILogger).to(LoggerService);
+	bind<ILogger>(TYPES.ILogger).to(LoggerService).inSingletonScope();
 	bind<IExceptionFilter>(TYPES.ExceptionFilter).to(ExceptionFilter);
 	bind<IUserController>(TYPES.UserController).to(UserController);
 	bind<IUserService>(TYPES.UserService).to(UserService);
+	bind<IConfigService>(TYPES.ConfigService).to(ConfigService).inSingletonScope();
+	bind<PrismaService>(TYPES.PrismaService).to(PrismaService).inSingletonScope();
 	bind<App>(TYPES.Application).to(App);
 });
 
