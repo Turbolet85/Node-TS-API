@@ -6,6 +6,8 @@ import { type ILogger } from './logger/logger.interface.js';
 import { inject, injectable } from 'inversify';
 import { TYPES } from './types.js';
 import 'reflect-metadata';
+import pkg from 'body-parser';
+const { json } = pkg;
 
 @injectable()
 export class App {
@@ -19,7 +21,11 @@ export class App {
 		@inject(TYPES.ExceptionFilter) private readonly exceptionFilter: ExceptionFilter,
 	) {
 		this.app = express();
-		this.port = 8000;
+		this.port = 8001;
+	}
+
+	useMiddleware(): void {
+		this.app.use(json());
 	}
 
 	useRoutes(): void {
@@ -31,6 +37,7 @@ export class App {
 	}
 
 	public async init(): Promise<void> {
+		this.useMiddleware();
 		this.useRoutes();
 		this.useExceptionFilters();
 		this.server = this.app.listen(this.port);

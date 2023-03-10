@@ -7,16 +7,24 @@ import { type ILogger } from './logger/logger.interface.js';
 import { TYPES } from './types.js';
 import { type IExceptionFilter } from './errors/exception.filter.interface.js';
 import 'reflect-metadata';
-import { type IUserController } from './users/user.controller.interface';
+import { type IUserController } from './users/user.controller.interface.js';
+import { IUserService } from './users/user.service.interface.js';
+import { UserService } from './users/user.service.js';
+
+export interface IBootstrapReturn {
+	appContainer: Container;
+	app: App;
+}
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<ILogger>(TYPES.ILogger).to(LoggerService);
 	bind<IExceptionFilter>(TYPES.ExceptionFilter).to(ExceptionFilter);
 	bind<IUserController>(TYPES.UserController).to(UserController);
+	bind<IUserService>(TYPES.UserService).to(UserService);
 	bind<App>(TYPES.Application).to(App);
 });
 
-function bootstrap() {
+function bootstrap(): IBootstrapReturn {
 	const appContainer = new Container();
 	appContainer.load(appBindings);
 	const app = appContainer.get<App>(TYPES.Application);
