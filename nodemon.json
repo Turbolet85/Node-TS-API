@@ -6,5 +6,5 @@
   "ignore": [
     "src/**/*.spec.ts"
   ],
-  "exec": "ts-node-esm ./src/main.ts"
+  "exec": "ts-node-esm --files ./src/main.ts"
 }
