@@ -6,6 +6,6 @@ export class AuthGuard implements IMiddleware {
 		if (req.user) {
 			return next();
 		}
-		res.status(401).send('No credentials');
+		res.status(401).send({ error: 'No credentials' });
 	}
 }
